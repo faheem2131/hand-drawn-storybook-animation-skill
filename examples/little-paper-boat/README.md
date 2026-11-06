@@ -1,6 +1,6 @@
 # 《小纸船》The Little Paper Boat — 30-second example
 
-A 30-second watercolor picture-book short made with this skill. All of it is drawn live on one canvas by code: no image assets, no fonts or CDN beyond system fonts. The score is synthesized too.
+A 30-second watercolor picture-book short made with this skill, in a bright, saturated palette for kids. All of it is drawn live on one canvas by code: no image assets, no fonts or CDN beyond system fonts. The score is synthesized too.
 
 一个用本 Skill 做的 30 秒水彩绘本短片：画面全部由代码在一张 canvas 上实时画出，没有图片素材；配乐也是程序合成的。
 

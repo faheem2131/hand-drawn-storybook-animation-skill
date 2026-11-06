@@ -147,8 +147,8 @@ const night = t => ss(9.8, 15.5, t);
 // ---------------------------------------------------------- pre-rendered art
 const R = rng(2024);
 const SKY = [
-  { stops: [[0, [126, 148, 204]], [.42, [192, 176, 216]], [.78, [245, 196, 172]], [1, [250, 222, 180]]], blot: [255, 240, 226] },
-  { stops: [[0, [20, 27, 62]], [.5, [36, 46, 98]], [1, [70, 82, 146]]], blot: [120, 130, 200] }
+  { stops: [[0, [64, 168, 246]], [.42, [150, 170, 255]], [.72, [255, 150, 200]], [1, [255, 214, 110]]], blot: [255, 250, 240] },
+  { stops: [[0, [44, 36, 150]], [.5, [78, 60, 196]], [1, [150, 96, 220]]], blot: [170, 140, 255] }
 ].map((p, k) => sprite(1500, 820, (g, w, h) => {
   const gr = g.createLinearGradient(0, 0, 0, h);
   p.stops.forEach(([o, c]) => gr.addColorStop(o, rgb(c)));
@@ -158,8 +158,8 @@ const SKY = [
   for (let i = 0; i < 25; i++) wash(g, r() * w, r() * h, 100 + r() * 200, 30 + r() * 60, shade(p.stops[1][1], .85), r, { layers: 3, alpha: .05, edge: false, jit: .3 });
 }));
 const SEA = [
-  [[128, 176, 198], [80, 134, 172], [56, 100, 146]],
-  [[48, 62, 114], [28, 38, 82], [16, 22, 54]]
+  [[70, 214, 226], [28, 170, 222], [14, 116, 206]],
+  [[70, 76, 200], [44, 54, 170], [30, 34, 132]]
 ].map((p, k) => sprite(1500, 820, (g, w, h) => {
   const gr = g.createLinearGradient(0, 0, 0, h);
   gr.addColorStop(0, rgb(p[0])); gr.addColorStop(.35, rgb(p[1])); gr.addColorStop(1, rgb(p[2]));
@@ -167,11 +167,11 @@ const SEA = [
   const r = rng(31 + k);
   for (let i = 0; i < 70; i++) wash(g, r() * w, 20 + r() * h, 150 + r() * 260, 8 + r() * 26, shade(p[1], 1.12), r, { layers: 3, alpha: .07, edge: false, jit: .2 });
   for (let i = 0; i < 40; i++) wash(g, r() * w, 20 + r() * h, 120 + r() * 200, 6 + r() * 18, shade(p[2], .9), r, { layers: 3, alpha: .07, edge: false, jit: .2 });
-  g.save(); g.beginPath(); g.rect(0, 0, w, h); g.clip(); granulate(g, 0, 0, w, h, shade(p[2], .7), 9000, r, .18); g.restore();
+  g.save(); g.beginPath(); g.rect(0, 0, w, h); g.clip(); granulate(g, 0, 0, w, h, shade(p[2], .7), 9000, r, .12); g.restore();
 }));
 // far islands (parallax .35): day + night versions of identical shapes
 const ISLANDS = [[-260, 230, 46], [260, 340, 70], [760, 200, 38], [1160, 300, 58], [1560, 240, 44], [1950, 320, 64]];
-const ISL = [[[118, 140, 182], [86, 104, 150]], [[40, 50, 94], [28, 36, 74]]].map((pal, k) => ISLANDS.map(([, w, h], i) => sprite(w + 60, h + 30, (g, sw, sh) => {
+const ISL = [[[96, 200, 120], [52, 160, 104]], [[86, 70, 186], [64, 50, 160]]].map((pal, k) => ISLANDS.map(([, w, h], i) => sprite(w + 60, h + 30, (g, sw, sh) => {
   const r = rng(70 + i), base = sh - 6;
   const pts = []; const n = 22;
   for (let j = 0; j <= n; j++) { const u = j / n; const bump = Math.pow(Math.sin(u * Math.PI), .8) * (1 - .25 * Math.sin(u * 9 + i)) ; pts.push([30 + u * w, base - bump * h + (r() - .5) * 4]); }
@@ -191,14 +191,14 @@ const ISL = [[[118, 140, 182], [86, 104, 150]], [[40, 50, 94], [28, 36, 74]]].ma
 })));
 // clouds (parallax .12)
 const CLOUDS = [[60, 120, 260], [520, 70, 320], [980, 150, 240], [1380, 90, 300], [1800, 140, 260], [2200, 80, 280]];
-const CLD = [[250, 222, 214], [64, 74, 130]].map((col, k) => CLOUDS.map(([, , w], i) => sprite(w + 80, 110, (g) => {
+const CLD = [[255, 242, 250], [150, 120, 230]].map((col, k) => CLOUDS.map(([, , w], i) => sprite(w + 80, 110, (g) => {
   const r = rng(140 + i);
   for (let j = 0; j < 5; j++) wash(g, 40 + w * (.2 + .6 * r()), 55 + (r() - .5) * 20, w * (.18 + r() * .18), 16 + r() * 12, col, r, { layers: 5, alpha: k ? .2 : .22, edgeW: 1.2 });
   const pts = []; for (let j = 0; j <= 30; j++) { const u = j / 30; pts.push([40 + u * w, 62 - Math.abs(Math.sin(u * Math.PI * 3)) * 16 * Math.sin(u * Math.PI)]); }
   ink(g, wobble(pts, 5, .8, i), { w: 1.2, a: k ? .35 : .5, seed: i * 7 });
 })));
 // gold bloom that the stars leave on the water
-const BLOOM = sprite(220, 70, (g) => { const r = rng(300); wash(g, 110, 35, 62, 15, [255, 190, 86], r, { layers: 7, alpha: .16, edgeW: 1.4 }); wash(g, 110, 35, 32, 8, [255, 228, 150], r, { layers: 4, alpha: .22, edge: false }); });
+const BLOOM = sprite(220, 70, (g) => { const r = rng(300); wash(g, 110, 35, 64, 16, [255, 196, 40], r, { layers: 8, alpha: .22, edgeW: 1.6 }); wash(g, 110, 35, 34, 9, [255, 244, 170], r, { layers: 5, alpha: .3, edge: false }); });
 // paper grain (soft-light overlay)
 const GRAIN = sprite(W, H, (g, w, h) => {
   const im = g.createImageData(w, h), d = im.data, r = rng(7);
@@ -218,14 +218,14 @@ const SHORE = sprite(SHORE_W, SHORE_H, (g, w, h) => {
   const top = []; for (let sx = OX; sx <= w; sx += 30) top.push([sx, hillY(sx)]);
   const edge = []; for (let j = 0; j <= 16; j++) { const u = j / 16; edge.push([OX - EDGE_DX * Math.pow(u, EDGE_P) + Math.sin(u * 9) * 5, base + 8 + u * (h - base - 8)]); }
   g.beginPath(); edge.slice().reverse().forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); top.forEach(p => g.lineTo(p[0], p[1])); g.lineTo(w, h); g.closePath();
-  const gr = g.createLinearGradient(0, base - 160, 0, h); gr.addColorStop(0, rgb([56, 88, 92])); gr.addColorStop(.24, rgb([70, 96, 98])); gr.addColorStop(.34, rgb([128, 116, 116])); gr.addColorStop(1, rgb([92, 82, 96]));
+  const gr = g.createLinearGradient(0, base - 160, 0, h); gr.addColorStop(0, rgb([70, 190, 96])); gr.addColorStop(.24, rgb([86, 196, 104])); gr.addColorStop(.34, rgb([246, 196, 120])); gr.addColorStop(1, rgb([236, 168, 110]));
   g.fillStyle = gr; g.fill();
   g.save(); g.clip();
-  for (let j = 0; j < 22; j++) wash(g, r() * w, base - 20 + r() * (h - base + 20), 80 + r() * 160, 20 + r() * 40, [150, 132, 126], r, { layers: 3, alpha: .12, edge: false });
+  for (let j = 0; j < 22; j++) wash(g, r() * w, base - 20 + r() * (h - base + 20), 80 + r() * 160, 20 + r() * 40, [255, 220, 150], r, { layers: 3, alpha: .14, edge: false });
   // wet sand band along the water's edge
-  g.lineCap = 'round'; for (let j = 0; j < 3; j++) { g.strokeStyle = rgb([70, 76, 104], .18); g.lineWidth = 26 - j * 7; g.beginPath(); edge.forEach((p, i) => i ? g.lineTo(p[0] + 12, p[1]) : g.moveTo(p[0] + 12, p[1])); g.stroke(); }
-  for (let j = 0; j < 12; j++) wash(g, OX + 200 + r() * w, base - 150 + r() * 90, 80 + r() * 140, 14 + r() * 20, [64, 100, 96], r, { layers: 3, alpha: .2, edge: false });
-  granulate(g, 0, 0, w, h, [30, 30, 40], 7000, r, .22);
+  g.lineCap = 'round'; for (let j = 0; j < 3; j++) { g.strokeStyle = rgb([200, 130, 90], .2); g.lineWidth = 26 - j * 7; g.beginPath(); edge.forEach((p, i) => i ? g.lineTo(p[0] + 12, p[1]) : g.moveTo(p[0] + 12, p[1])); g.stroke(); }
+  for (let j = 0; j < 12; j++) wash(g, OX + 200 + r() * w, base - 150 + r() * 90, 80 + r() * 140, 14 + r() * 20, [40, 160, 80], r, { layers: 3, alpha: .2, edge: false });
+  granulate(g, 0, 0, w, h, [140, 90, 60], 7000, r, .18);
   g.restore();
   ink(g, wobble(top, 6, 1.4, 5), { w: 2.2, seed: 40 });
   ink(g, wobble(edge, 6, 1.2, 6), { w: 1.8, seed: 41, a: .8 });
@@ -237,20 +237,20 @@ const SHORE = sprite(SHORE_W, SHORE_H, (g, w, h) => {
   }
   // house on the hill
   const [hx, hy] = HOUSE;
-  g.fillStyle = rgb([196, 170, 150]); g.fillRect(hx - 52, hy - 62, 104, 62);
-  g.save(); g.beginPath(); g.rect(hx - 52, hy - 62, 104, 62); g.clip(); for (let j = 0; j < 4; j++) wash(g, hx + (r() - .5) * 80, hy - 30, 50, 30, [140, 118, 112], r, { layers: 2, alpha: .18, edge: false }); g.restore();
-  g.beginPath(); g.moveTo(hx - 66, hy - 58); g.lineTo(hx, hy - 112); g.lineTo(hx + 66, hy - 58); g.closePath(); g.fillStyle = rgb([118, 64, 58]); g.fill();
-  g.fillStyle = rgb([92, 70, 66]); g.fillRect(hx + 26, hy - 112, 14, 30);
+  g.fillStyle = rgb([255, 226, 150]); g.fillRect(hx - 52, hy - 62, 104, 62);
+  g.save(); g.beginPath(); g.rect(hx - 52, hy - 62, 104, 62); g.clip(); for (let j = 0; j < 4; j++) wash(g, hx + (r() - .5) * 80, hy - 30, 50, 30, [255, 180, 110], r, { layers: 2, alpha: .18, edge: false }); g.restore();
+  g.beginPath(); g.moveTo(hx - 66, hy - 58); g.lineTo(hx, hy - 112); g.lineTo(hx + 66, hy - 58); g.closePath(); g.fillStyle = rgb([236, 64, 70]); g.fill();
+  g.fillStyle = rgb([170, 90, 200]); g.fillRect(hx + 26, hy - 112, 14, 30);
   ink(g, wobble([[hx - 52, hy], [hx - 52, hy - 60], [hx + 52, hy - 60], [hx + 52, hy]], 5, .9, 3), { w: 2, seed: 50 });
   ink(g, wobble([[hx - 68, hy - 56], [hx, hy - 113], [hx + 68, hy - 56]], 5, .9, 4), { w: 2.2, seed: 51 });
   ink(g, wobble([[hx + 26, hy - 92], [hx + 26, hy - 112], [hx + 40, hy - 112], [hx + 40, hy - 80]], 4, .6, 6), { w: 1.6, seed: 52 });
   ink(g, wobble([[hx - 14, hy], [hx - 14, hy - 32], [hx + 6, hy - 32], [hx + 6, hy]], 4, .6, 7), { w: 1.6, seed: 53 });  // door
-  g.fillStyle = rgb([40, 34, 40]); g.fillRect(hx + 18, hy - 44, 22, 20);                                             // window (lit at runtime)
+  g.fillStyle = rgb([90, 60, 120]); g.fillRect(hx + 18, hy - 44, 22, 20);                                             // window (lit at runtime)
   ink(g, wobble([[hx + 18, hy - 44], [hx + 40, hy - 44], [hx + 40, hy - 24], [hx + 18, hy - 24], [hx + 18, hy - 44]], 4, .5, 8), { w: 1.5, seed: 54 });
   // a round tree
   const [tx, ty] = TREE;
   ink(g, wobble([[tx, ty + 2], [tx + 2, ty - 50]], 4, .8, 9), { w: 3, seed: 55 });
-  wash(g, tx, ty - 74, 46, 40, [60, 96, 90], r, { layers: 6, alpha: .2 });
+  wash(g, tx, ty - 74, 46, 40, [60, 200, 90], r, { layers: 6, alpha: .3 });
   ink(g, wobble(ellipsePts(tx, ty - 74, 44, 38, 30), 6, 2.2, 10), { w: 1.8, seed: 56 });
 });
 const SHORE_X0 = CX - 20 - OX;                 // world x of sprite x=0
@@ -291,9 +291,9 @@ function drawBoat(g, x, y, rot, m, t, glow = 0, flutter = 0) {
   g.beginPath(); P.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.closePath();
   g.fillStyle = rgb(paper); g.fill();
   const M = [(P[1][0] + P[3][0]) / 2, (P[1][1] + P[3][1]) / 2];
-  g.fillStyle = rgb([120, 130, 160], .32 * m); g.beginPath(); g.moveTo(...P[2]); g.lineTo(...P[3]); g.lineTo(...M); g.fill();
+  g.fillStyle = rgb([90, 170, 255], .4 * m); g.beginPath(); g.moveTo(...P[2]); g.lineTo(...P[3]); g.lineTo(...M); g.fill();
   const a1 = [lerp(P[0][0], P[6][0], .45), lerp(P[0][1], P[6][1], .45)], a2 = [lerp(P[4][0], P[5][0], .45), lerp(P[4][1], P[5][1], .45)];
-  g.fillStyle = rgb([120, 130, 160], .22 * m); g.beginPath(); g.moveTo(...a1); g.lineTo(...a2); g.lineTo(...P[5]); g.lineTo(...P[6]); g.fill();
+  g.fillStyle = rgb([255, 120, 170], .35 * m); g.beginPath(); g.moveTo(...a1); g.lineTo(...a2); g.lineTo(...P[5]); g.lineTo(...P[6]); g.fill();
   const seed = Math.floor(t * 8);   // boiling line: redraw the wobble 8× per second
   ink(g, wobble([...P, P[0]], 4, .7, seed), { w: 1.9, seed: seed + 1, taper: false });
   if (m > .3) {
@@ -323,12 +323,12 @@ function drawChild(t, boatPos) {
   // coat (warm — the light in this world belongs to the people waiting)
   const coat = [[-13, -42], [12, -42], [21, 12], [-22, 12]];
   g.beginPath(); coat.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1])); g.closePath();
-  g.fillStyle = rgb([214, 102, 72]); g.fill();
-  g.save(); g.clip(); const r = rng(9); wash(g, 6, -10, 18, 26, [170, 70, 58], r, { layers: 3, alpha: .25, edge: false }); g.restore();
+  g.fillStyle = rgb([255, 72, 64]); g.fill();
+  g.save(); g.clip(); const r = rng(9); wash(g, 6, -10, 18, 26, [220, 40, 60], r, { layers: 3, alpha: .25, edge: false }); g.restore();
   ink(g, wobble([...coat, coat[0]], 4, .7, seed + 2), { w: 2, seed: seed + 3, taper: false });
   // scarf
-  g.fillStyle = rgb([238, 196, 96]); g.fillRect(-14, -46, 28, 8);
-  ink(g, wobble([[10, -40], [16, -22]], 3, .6, seed + 5), { w: 4, col: [226, 180, 80], seed, taper: false });
+  g.fillStyle = rgb([255, 214, 40]); g.fillRect(-14, -46, 28, 8);
+  ink(g, wobble([[10, -40], [16, -22]], 3, .6, seed + 5), { w: 4, col: [255, 200, 30], seed, taper: false });
   // head
   const hc = [-2, -62];
   g.fillStyle = rgb([244, 214, 188]); g.beginPath(); g.arc(hc[0], hc[1], 16, 0, TAU); g.fill();
@@ -357,10 +357,10 @@ function drawChild(t, boatPos) {
     hand = dd > L ? [sh[0] + (tx - sh[0]) / dd * L, sh[1] + (ty - sh[1]) / dd * L] : [tx, ty];
   }
   const elbow = [(sh[0] + hand[0]) / 2 + 4, (sh[1] + hand[1]) / 2 + 6];
-  ink(g, wobble([sh, elbow, hand], 3, .5, seed + 8), { w: 4.4, col: [190, 84, 62], seed, taper: false });
+  ink(g, wobble([sh, elbow, hand], 3, .5, seed + 8), { w: 4.4, col: [230, 56, 56], seed, taper: false });
   g.fillStyle = rgb([244, 214, 188]); g.beginPath(); g.arc(hand[0], hand[1], 3.6, 0, TAU); g.fill();
   const sh2 = [8, -36], h2 = [16, -6 + Math.sin(t * 2) * 1.2];
-  ink(g, wobble([sh2, [14, -20], h2], 3, .5, seed + 9), { w: 4.4, col: [190, 84, 62], seed, taper: false });
+  ink(g, wobble([sh2, [14, -20], h2], 3, .5, seed + 9), { w: 4.4, col: [230, 56, 56], seed, taper: false });
   g.restore();
   // lantern hangs from the back hand (world space so it stays upright)
   const c = Math.cos(-.75 * bend), s = Math.sin(-.75 * bend);
@@ -392,7 +392,7 @@ function waveRow(t, wy, scale, a, n, seedRow, maxX = Infinity) {
     const x = k * tile - drift + hash(k + seedRow * 3) * tile * .6, y = wy + Math.sin(t * 1.3 + k) * 2 * scale * (1 + n);
     const w = (14 + h * 18) * scale * (1 + n * .4), amp = (3 + n * 3) * scale;
     const pts = []; for (let i = 0; i <= 12; i++) { const u = i / 12; pts.push([x + u * w * 2, y + Math.sin(u * TAU * 2 + Math.PI) * amp * .5 - Math.abs(Math.sin(u * TAU)) * amp * .3]); }
-    ink(ctx, pts, { w: 1.3 * scale + .3, a, col: mix([40, 70, 110], [180, 196, 236], n * .7), seed: k, taper: true });
+    ink(ctx, pts, { w: 1.3 * scale + .3, a, col: mix([255, 255, 255], [200, 210, 255], n), seed: k, taper: true });
   }
 }
 
@@ -401,7 +401,7 @@ function subtitle(t, t0, t1, en, zh) {
   if (a <= 0) return;
   screen();
   const n = night(t), dark = n > .45;
-  const fg = dark ? [246, 240, 226] : [42, 36, 32], halo = dark ? [16, 20, 44] : [250, 244, 230];
+  const fg = dark ? [246, 240, 226] : [42, 36, 32], halo = dark ? [30, 20, 90] : [255, 250, 240];
   ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.lineJoin = 'round';
   const lines = [[en, '600 29px Georgia, "Bitstream Charter", "DejaVu Serif", serif', H - 72], [zh, '25px "PingFang SC", "Noto Sans SC", "WenQuanYi Zen Hei", sans-serif', H - 36]];
   for (const [txt, font, y] of lines) {
@@ -435,7 +435,7 @@ function renderAt(t) {
   if (pSky > 0) {
     ctx.save(); revealClip(pSky, -20, hy + 4);
     const sx = -110 - (cam.x - 640) * .02;
-    ctx.fillStyle = rgb(mix([126, 148, 204], [20, 27, 62], n)); ctx.fillRect(0, 0, W, hy);
+    ctx.fillStyle = rgb(mix([64, 168, 246], [44, 36, 150], n)); ctx.fillRect(0, 0, W, hy);
     ctx.drawImage(SKY[0], sx, hy - 820);
     if (n > 0) { ctx.globalAlpha = n; ctx.drawImage(SKY[1], sx, hy - 820); ctx.globalAlpha = 1; }
     // stars
@@ -454,9 +454,9 @@ function renderAt(t) {
     const ma = ss(12.8, 15, t);
     if (ma > 0) {
       const mx = 1040 - (cam.x - 640) * .03, my = hy - 300 * Math.min(1, cam.z);
-      glow(mx, my, 120, [230, 236, 255], .22 * ma);
+      glow(mx, my, 130, [255, 240, 200], .3 * ma);
       ctx.save(); ctx.beginPath(); ctx.arc(mx, my, 30, 0, TAU); ctx.clip();   // crescent = moon minus an offset disc
-      ctx.fillStyle = rgb([248, 238, 206], ma); ctx.beginPath(); ctx.arc(mx, my, 30, 0, TAU); ctx.arc(mx + 13, my - 8, 27, 0, TAU); ctx.fill('evenodd'); ctx.restore();
+      ctx.fillStyle = rgb([255, 236, 150], ma); ctx.beginPath(); ctx.arc(mx, my, 30, 0, TAU); ctx.arc(mx + 13, my - 8, 27, 0, TAU); ctx.fill('evenodd'); ctx.restore();
       ctx.strokeStyle = rgb(INK, .5 * ma); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(mx, my, 30, Math.PI * .1, Math.PI * 1.45); ctx.stroke();
     }
     // sun sets behind the horizon
@@ -464,9 +464,9 @@ function renderAt(t) {
     if (sunA > 0) {
       const sxp = 930 - (cam.x - 640) * .05, syp = hy - lerp(210, -34, ss(3.5, 13.6, t)) * Math.min(1.1, cam.z);
       const sr = 46 * (.6 + .4 * ss(2.6, 3.8, t));
-      glow(sxp, syp, 260, [255, 196, 120], .45 * sunA);
+      glow(sxp, syp, 260, [255, 200, 90], .55 * sunA);
       ctx.save(); ctx.beginPath(); ctx.rect(0, 0, W, hy); ctx.clip();
-      const rr = rng(5); ctx.globalAlpha = sunA; wash(ctx, sxp, syp, sr, sr, [252, 150, 92], rr, { layers: 6, alpha: .26, jit: .06 }); ctx.globalAlpha = 1;
+      const rr = rng(5); ctx.globalAlpha = sunA; wash(ctx, sxp, syp, sr, sr, [255, 110, 50], rr, { layers: 6, alpha: .34, jit: .06 }); ctx.globalAlpha = 1;
       ctx.restore();
     }
     // clouds (parallax .12)
@@ -621,7 +621,7 @@ function renderAt(t) {
   }
   if (child) glow(child.lantern[0], child.lantern[1], 120 + Math.sin(t * 5) * 4, [255, 176, 90], .5 * ss(19, 21, t) + .1);
   blooms.forEach(([x, k, age], i) => {
-    glow(x, WATER + 6, 52, [255, 200, 110], .3 * k * (.85 + .15 * Math.sin(age * 4)));
+    glow(x, WATER + 6, 60, [255, 210, 90], .5 * k * (.85 + .15 * Math.sin(age * 4)));
     for (let j = 0; j < 3; j++) { const ph = age * 2.2 + j * 2.1 + i; const tw = Math.max(0, Math.sin(ph)); drawStar4(ctx, x + (hash(i * 7 + j) - .5) * 90, WATER - 4 - hash(i * 3 + j) * 16, 4 + 3 * tw, [255, 236, 180], .8 * k * tw); }
   });
   ctx.globalCompositeOperation = 'source-over';
@@ -629,13 +629,13 @@ function renderAt(t) {
 
   // ---- vignette + finale glow
   const vg = ctx.createRadialGradient(W / 2, H / 2, H * .35, W / 2, H / 2, H * .95);
-  vg.addColorStop(0, 'rgba(10,12,30,0)'); vg.addColorStop(1, `rgba(10,12,30,${.12 + .4 * n})`);
+  vg.addColorStop(0, 'rgba(30,10,60,0)'); vg.addColorStop(1, `rgba(30,10,60,${.06 + .22 * n})`);
   ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
   const fin = ss(27.0, 28.0, t);
   if (fin > 0) { ctx.globalCompositeOperation = 'lighter'; glow(W / 2 - 20, H / 2 - 10, 520, [255, 190, 110], .28 * fin); ctx.globalCompositeOperation = 'source-over'; }
 
   // ---- paper grain over everything painted
-  ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = .6; ctx.drawImage(GRAIN, 0, 0);
+  ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = .4; ctx.drawImage(GRAIN, 0, 0);
   ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
 
   // ---- title on blank paper
@@ -672,7 +672,7 @@ function renderAt(t) {
     ctx.fillStyle = rgb(PAPER); ctx.fillRect(0, 0, W, H);
     ctx.globalCompositeOperation = 'soft-light'; ctx.globalAlpha = .6; ctx.drawImage(GRAIN, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
     const ea = ss(28.4, 29.0, t);
-    const rr = rng(12); ctx.globalAlpha = ea; wash(ctx, W / 2, 300, 150, 26, [128, 176, 198], rr, { layers: 5, alpha: .18 }); ctx.globalAlpha = 1;
+    const rr = rng(12); ctx.globalAlpha = ea; wash(ctx, W / 2, 300, 150, 26, [40, 190, 230], rr, { layers: 5, alpha: .22 }); ctx.globalAlpha = 1;
     drawBoat(ctx, W / 2, 284 + Math.sin(t * 2) * 2, Math.sin(t * 1.6) * .04, 1, t, ss(28.4, 29.6, t) * .6);
     ctx.textAlign = 'center';
     ctx.font = 'italic 600 46px Georgia, "Bitstream Charter", "DejaVu Serif", serif'; ctx.fillStyle = rgb(INK, ea); ctx.fillText('The Little Paper Boat', W / 2, 400);
