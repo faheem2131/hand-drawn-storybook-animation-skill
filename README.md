@@ -23,7 +23,7 @@ Everything below is drawn live in the browser by code — no pre-rendered video,
 | | |
 |---|---|
 | **《女娲补天》Nüwa Mends the Sky** 中国神话水墨：女娲托石、炼五色石、白描侧脸<br>![](previews/06-nuwa-mends-the-sky.gif) | **《墨水宇宙 · 汴河码头》Along the River** 清明上河图：一滴墨晕成河，白描街市再淡设色<br>![](previews/07-qingming-river-dock.gif) |
-| **《今晚，有人敲门吗？》Who Knocks Tonight?** 万圣节夜晚绘本：暖灯冷月、灯笼河<br>![](previews/08-who-knocks-tonight.gif) | |
+| **《今晚，有人敲门吗？》Who Knocks Tonight?** 万圣节夜晚绘本：暖灯冷月、灯笼河<br>![](previews/08-who-knocks-tonight.gif) | **《小纸船》The Little Paper Boat** 30 秒完整短片：纸折成船，星星落进海里铺成一条路<br>![](previews/09-little-paper-boat.gif)<br>[Full 30s MP4 with music](previews/09-little-paper-boat-30s.mp4) · [source](examples/little-paper-boat/) |
 
 ## Install · 安装
 
