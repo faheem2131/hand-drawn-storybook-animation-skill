@@ -58,3 +58,7 @@ Tip: write the script first with GPT in three rounds (write → critique → sto
 
 - Doubao TTS needs your own Volcengine API key, kept in your project's `.env` — never commit it. If your cloud session can't reach the Doubao endpoint, run the TTS script on your own computer.
 - 豆包配音需要你自己的火山引擎 API Key，放在自己项目的 `.env` 里，不要提交到仓库。云端会话连不上豆包时，在自己电脑上跑配音脚本。
+
+## Bundled: cartoon-3d-short
+
+[`cartoon-3d-short/`](cartoon-3d-short/) is a copy of the MIT-licensed [mromidev/claude-animated-shorts](https://github.com/mromidev/claude-animated-shorts) skill (2D cartoon characters in a 3D world, three.js + Remotion). Its reference frames and contact sheets are left out on purpose; get them from the upstream repo if you need them. To install, copy the folder to `~/.claude/skills/cartoon-3d-short/`.
