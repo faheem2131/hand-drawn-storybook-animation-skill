@@ -62,3 +62,7 @@ Tip: write the script first with GPT in three rounds (write → critique → sto
 ## Bundled: cartoon-3d-short
 
 [`cartoon-3d-short/`](cartoon-3d-short/) is a copy of the MIT-licensed [mromidev/claude-animated-shorts](https://github.com/mromidev/claude-animated-shorts) skill (2D cartoon characters in a 3D world, three.js + Remotion). Its reference frames and contact sheets are left out on purpose; get them from the upstream repo if you need them. To install, copy the folder to `~/.claude/skills/cartoon-3d-short/`.
+
+## Bundled: arena
+
+[`arena/`](arena/) is a copy of the MIT-licensed [Jakeschincariol/arena-skill](https://github.com/Jakeschincariol/arena-skill) skill: a bracket of Claude sub-agents compete on one task, with a judge scoring each match. To install, copy the folder to `~/.claude/skills/arena/`.
