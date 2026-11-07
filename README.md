@@ -29,15 +29,17 @@ Everything below is drawn live in the browser by code — no pre-rendered video,
 
 **Claude (claude.ai / desktop)**
 
-1. Download this repo as a ZIP (or zip the `hand-drawn-storybook-animation` folder).
+1. Download this repo as a ZIP (or zip the `.claude/skills/hand-drawn-storybook-animation` folder).
 2. Customize → Skills → **+** → Create skill → **Upload a skill** → choose the ZIP.
 
 **Claude Code**
 
 ```bash
 git clone https://github.com/lhlGitHub/hand-drawn-storybook-animation-skill.git
-cp -r hand-drawn-storybook-animation-skill/hand-drawn-storybook-animation ~/.claude/skills/
+cp -r hand-drawn-storybook-animation-skill/.claude/skills/hand-drawn-storybook-animation ~/.claude/skills/
 ```
+
+All skills live in `.claude/skills/`, so opening this repo in Claude Code (including cloud sessions) loads them automatically: `hand-drawn-storybook-animation`, `cartoon-3d-short` and `arena`.
 
 ## Use · 使用
 
@@ -61,8 +63,8 @@ Tip: write the script first with GPT in three rounds (write → critique → sto
 
 ## Bundled: cartoon-3d-short
 
-[`cartoon-3d-short/`](cartoon-3d-short/) is a copy of the MIT-licensed [mromidev/claude-animated-shorts](https://github.com/mromidev/claude-animated-shorts) skill (2D cartoon characters in a 3D world, three.js + Remotion). Its reference frames and contact sheets are left out on purpose; get them from the upstream repo if you need them. To install, copy the folder to `~/.claude/skills/cartoon-3d-short/`.
+[`cartoon-3d-short/`](.claude/skills/cartoon-3d-short/) is a copy of the MIT-licensed [mromidev/claude-animated-shorts](https://github.com/mromidev/claude-animated-shorts) skill (2D cartoon characters in a 3D world, three.js + Remotion). Its reference frames and contact sheets are left out on purpose; get them from the upstream repo if you need them. To install, copy the folder to `~/.claude/skills/cartoon-3d-short/`.
 
 ## Bundled: arena
 
-[`arena/`](arena/) is a copy of the MIT-licensed [Jakeschincariol/arena-skill](https://github.com/Jakeschincariol/arena-skill) skill: a bracket of Claude sub-agents compete on one task, with a judge scoring each match. To install, copy the folder to `~/.claude/skills/arena/`.
+[`arena/`](.claude/skills/arena/) is a copy of the MIT-licensed [Jakeschincariol/arena-skill](https://github.com/Jakeschincariol/arena-skill) skill: a bracket of Claude sub-agents compete on one task, with a judge scoring each match. To install, copy the folder to `~/.claude/skills/arena/`.
